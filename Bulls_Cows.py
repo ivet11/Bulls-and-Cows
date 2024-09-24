@@ -18,7 +18,9 @@ print("-----------------------------------------------")
 
 
 def generate_secret_number():
-    digits = random.sample(range(1, 10), 4)
+    first_digit = random.randint(1, 9)
+    remaining_digits = random.sample([d for d in range(0, 10) if d != first_digit], 3)
+    digits = [first_digit] + remaining_digits
     return ''.join(map(str, digits))
 
 # Function checks, if guess is valid and can be used for evaluation (4-digit number with unique digits, not starting with zero).
@@ -60,10 +62,13 @@ def score(attempts):
 def main():
     secret_number = generate_secret_number()
     attempts = 0
-    start_time = time.time()
+    start_time = None
     
     while True:
-        guess = input("Enter a number:\n-----------------------------------------------\n>>> ")
+        guess = input("Enter a number:\n-----------------------------------------------\n")
+        
+        if start_time is None:
+            start_time = time.time()
         
         if not guess_check(guess):
             print("Invalid input. Please enter a 4-digit number with unique digits, not starting with zero.")
